@@ -60,16 +60,36 @@
   | 0 => 1
   | suc y => x * (x ^ y)
 
+\func powTest1 : 10 ^ 4 = 10000 => idp
+\func powTest2 : 3 ^ 1 = 3 => idp
+
 \func fac (x : Nat) : Nat \elim  x
   | 0 => 1
   | suc x => (suc x) * fac x
+
+\func facTest1 : fac 0 = 1 => idp
+\func facTest2 : fac 6 = 720 => idp
 
 -- 7. Определите mod и gcd.
 
 \func mod (x y : Nat) => x - (y * div x y)
 
+\func modTest1 : mod 19 3 = 1 => idp
+
 \func gcd (x y : Nat) : Nat => gcd' y x y
     \where
       \func gcd' (s x y : Nat) : Nat \elim s
-        | 0 => 0
-        | suc s => 0
+        | 0 => x
+        | suc s => \case y \with {
+          | 0 => x
+          | y => gcd' s y (x `mod` y)
+        }
+
+\func gcdTest1 : gcd 5 3 = 1 => idp
+\func gcdTest2 : gcd 3 5 = 1 => idp
+\func gcdTest3 : gcd 16 8 = 8 => idp
+\func gcdTest4 : gcd 8 16 = 8 => idp
+\func gcdTest5 : gcd 0 3 = 3 => idp
+\func gcdTest6 : gcd 3 0 = 3 => idp
+\func gcdTest7 : gcd 16 1596 = 4 => idp
+\func gcdTest8 : gcd 1596 16 = 4 => idp
